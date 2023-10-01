@@ -8,6 +8,7 @@ public class RoadBlockManager : MonoBehaviour
     public Transform nextRoadSpawnPoint;
     public GameObject roadBlockPrefab;
     public List<Transform> spawnPointsParents;
+    
 
     public GameObject obsticalPrefab;
 
@@ -20,7 +21,8 @@ public class RoadBlockManager : MonoBehaviour
             foreach (Transform pointsParent in spawnPointsParents)
             {
                Transform randomPoint = pointsParent.transform.GetChild((int)Random.Range(0,pointsParent.transform.childCount - 1));
-               Instantiate(obsticalPrefab, randomPoint.position, Quaternion.identity);
+               GameObject newObstical = Instantiate(obsticalPrefab, randomPoint.position, Quaternion.identity);
+               newObstical.transform.SetParent(transform, true);
             }
             obsticalsSpawned = true;
         }
@@ -29,6 +31,7 @@ public class RoadBlockManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Instantiate(roadBlockPrefab, nextRoadSpawnPoint.position, Quaternion.identity);
+        
     }
     private void OnTriggerExit2D(Collider2D other)
     {

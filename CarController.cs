@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
+    public List<Vector2> rays;
     public float movementSpeed = 2;
     //rotation rate per second in angles
     public float rotationRate = 1;
     //min and max angles in degrees 
     public Vector2 rotationRange = new Vector2(-45,45);
     private Rigidbody2D rb;
-
+    private List<Vector2> hitPoints;
     private void Start() {
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
@@ -21,7 +22,16 @@ public class CarController : MonoBehaviour
         transform.eulerAngles += new Vector3(0,0,rotationRate * Time.fixedDeltaTime);
         else if(Input.GetKey(KeyCode.RightArrow) && Mathf.Sin(Mathf.Deg2Rad * (transform.eulerAngles.z - (rotationRate * Time.fixedDeltaTime))) >= Mathf.Sin(Mathf.Deg2Rad *rotationRange.x))
         transform.eulerAngles -= new Vector3(0,0,rotationRate * Time.fixedDeltaTime);
-        
+
         rb.velocity = new Vector2(-movementSpeed * Mathf.Sin(Mathf.Deg2Rad * transform.eulerAngles.z),movementSpeed * Mathf.Cos(Mathf.Deg2Rad *transform.eulerAngles.z));
+        hitPoints = new List<Vector2>();
+        //raycasting code here
+        foreach (Vector2 ray in rays)
+        {
+            Vector2 newRay = Quaternion.Euler(0,0, transform.eulerAngles.z) * ray;
+            hitPoints.Add(Physics2D.Raycast(transform.position, newRay).point);
+            Debug.DrawLine(transform.position,hitPoints[hitPoints.Count -1],Color.green);
+        }
+        Debug.Log(hitPoints[0].ToString());
     }
 }

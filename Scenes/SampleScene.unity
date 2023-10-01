@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 1956558113}
   - component: {fileID: 1956558114}
   - component: {fileID: 1956558115}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,6 +398,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ca73ddb6437e7458f60f62ed6a66c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rays:
+  - {x: 0, y: 1}
+  - {x: 1, y: 0}
+  - {x: -1, y: 0}
+  - {x: 1, y: 1}
+  - {x: -1, y: 1}
+  - {x: 0.5, y: 1}
+  - {x: -0.5, y: 1}
+  - {x: 1, y: 0.5}
+  - {x: -1, y: 0.5}
   movementSpeed: 5
   rotationRate: 30
   rotationRange: {x: -45, y: 45}
@@ -494,6 +504,10 @@ PrefabInstance:
     - target: {fileID: 2913226664694614474, guid: 53c74902de035bf4d8dd11d35eb92174, type: 3}
       propertyPath: m_Name
       value: Road Block
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913226664694614474, guid: 53c74902de035bf4d8dd11d35eb92174, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3748839653853137974, guid: 53c74902de035bf4d8dd11d35eb92174, type: 3}
       propertyPath: m_IsTrigger
