@@ -17,7 +17,6 @@ public class CarController : MonoBehaviour
     public Vector2 rotationRange = new Vector2(-45, 45);
     private Rigidbody2D rb;
     private List<Vector2> hitPoints;
-    private const int HEADER_SIZE = 10;
     private Socket sender;
     private void Start()
     {
@@ -56,57 +55,39 @@ public class CarController : MonoBehaviour
         data = data.Remove(data.Length - 1);
         data += "]";
         data = "{" + data + "}";
-        Debug.Log(data);
         sendData(data);
     }
 
     int sendData(string data)
     {
-        string header = data.Length.ToString();
-        for (int i = 0; i < HEADER_SIZE - data.Length.ToString().Length;i++)
-            header += " ";
-        string message = header + data;
         try
         {
             try
             {
-              
-
-                
-
-              //  Debug.Log("Socket connected to -> {0} ",
-                //              sender.RemoteEndPoint.ToString());
-
-                byte[] messageSent = Encoding.ASCII.GetBytes(message);
+                byte[] messageSent = Encoding.ASCII.GetBytes(data);
                 int byteSent = sender.Send(messageSent);
-
-                byte[] messageReceived = new byte[4];
+                byte[] messageReceived = new byte[128];
 
 
                 int byteRecv = sender.Receive(messageReceived);
-               // Debug.Log("Message from Server -> {0}",
-                 //     Encoding.ASCII.GetString(messageReceived,
-                                //                 0, byteRecv));
-          
-
+                string prediction = Encoding.UTF8.GetString(messageReceived);
+                Debug.Log(prediction);
             }
 
             // Manage of Socket's Exceptions
             catch (ArgumentNullException ane)
             {
-
-               // Debug.LogError("ArgumentNullException : {0}", ane.ToString());
+                Debug.LogError(ane.ToString());
             }
-
             catch (SocketException se)
             {
+                Debug.LogError(se.ToString());
 
-               // Debug.LogError("SocketException : {0}", se.ToString());
             }
-
             catch (Exception e)
             {
-               // Debug.LogError("Unexpected exception : {0}", e.ToString());
+                Debug.LogError(e.ToString());
+
             }
         }
 
@@ -120,7 +101,7 @@ public class CarController : MonoBehaviour
 
     void OnDestroy()
     {
-              sender.Shutdown(SocketShutdown.Both);
+        sender.Shutdown(SocketShutdown.Both);
         sender.Close();
     }
 }
